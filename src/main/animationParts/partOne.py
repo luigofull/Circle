@@ -4,7 +4,6 @@ from MF_Tools import *
 
 # Inscribed Angle Theorem: The measure of an inscribed angle is half the measure of its intercepted arc or the central angle that subtends the same arc.
 
-
 def begining_of_animation(self):
     text_obj1 = Text(
         "Inscribed Angle Theorem:",
@@ -17,11 +16,17 @@ def begining_of_animation(self):
     )
     text_obj1.next_to(text_obj2, UP, buff=0.2)
     
+    
     self.play(
         Write(text_obj1),
+        run_time=2
+    )
+    
+    self.play(
         Write(text_obj2),
         run_time=2
     )
+    
     self.wait()
 
     self.play(
