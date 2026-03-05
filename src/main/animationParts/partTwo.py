@@ -105,12 +105,6 @@ def part_two_main(self):
     line_eb = always_redraw(lambda: Line(dot_e.get_center(), dot_b.get_center()))
     
     
-    # Underlines
-    underline_acb = Underline(acb_val[0], buff=0.1, color=YELLOW)
-    underline_adb = Underline(adb_val[0], buff=0.1, color=YELLOW)
-    underline_aeb = Underline(aeb_val[0], buff=0.1, color=YELLOW)
-    
-    
     # Center angle & value
     central_angle = always_redraw(
         lambda: Angle(line_oa, line_ob, radius=2.6, color=BLUE, other_angle=False)
@@ -166,6 +160,12 @@ def part_two_main(self):
         .set_color(WHITE)
         .set_stroke(color=BLACK, width=9, background=True)
     )
+    
+    
+    # Underlines
+    underline_acb = Underline(acb_val[0], buff=0.1, color=YELLOW)
+    underline_adb = Underline(adb_val[0], buff=0.1, color=YELLOW)
+    underline_aeb = Underline(aeb_val[0], buff=0.1, color=YELLOW)
 
 
     # Render the sketch

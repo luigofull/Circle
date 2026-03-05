@@ -93,18 +93,7 @@ def part_four_main(self):
     line_ca = always_redraw(lambda: Line(dot_c.get_center(), dot_a.get_center()))
     line_cb = always_redraw(lambda: Line(dot_c.get_center(), dot_b.get_center()))
     
-    
-    # Underlines
-    underline_acb = always_redraw(
-        lambda: Underline(acb_val[0], buff=0.1, color=YELLOW)
-        .set_stroke(color=BLACK, width=9, background=True)
-    )
-    underline_tba = always_redraw(
-        lambda: Underline(tba_val[0], buff=0.1, color=YELLOW)
-        .set_stroke(color=BLACK, width=9, background=True)
-    )
-    
-    
+
     # Inscribed angle & value
     def get_angle_val():
         arc_diff = abs((a_angle.get_value() % (2 * PI)) - (b_angle.get_value() % (2 * PI)))
@@ -134,6 +123,17 @@ def part_four_main(self):
         lambda: MathTex(rf"{get_angle_val():.1f}^\circ")
         .next_to(tba_angle, UP, buff=0.3)
         .set_color(WHITE)
+        .set_stroke(color=BLACK, width=9, background=True)
+    )
+    
+    
+    # Underlines
+    underline_acb = always_redraw(
+        lambda: Underline(acb_val[0], buff=0.1, color=YELLOW)
+        .set_stroke(color=BLACK, width=9, background=True)
+    )
+    underline_tba = always_redraw(
+        lambda: Underline(tba_val[0], buff=0.1, color=YELLOW)
         .set_stroke(color=BLACK, width=9, background=True)
     )
     
