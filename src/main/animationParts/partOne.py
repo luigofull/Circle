@@ -105,6 +105,7 @@ def part_one_main(self):
         
         return minor_arc / 2 / DEGREES
     
+    
     acb_angle = always_redraw(
         lambda: Angle(line_ca, line_cb, radius=0.8, color=ORANGE, other_angle=False)
     )

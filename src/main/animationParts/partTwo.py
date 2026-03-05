@@ -5,6 +5,7 @@ from MF_Tools import *
 # Angles Subtended by the Same Arc: Inscribed angles that subtend the same arc are congruent.
 
 def begining_of_part_two(self):
+    # Tex objects
     text_obj1 = Text(
         "Angles Subtended by the Same Arc:",
         font_size=36
@@ -14,21 +15,25 @@ def begining_of_part_two(self):
         "Inscribed angles that subtend the same arc are congruent.",
         font_size=26
     )
+    
     text_obj1.next_to(text_obj2, UP, buff=0.2)
     
     
+    # Write
     self.play(
         Write(text_obj1),
-        run_time=2
+        run_time=1.5
     )
     
     self.play(
-        Write(text_obj2),
-        run_time=2
+        FadeIn(text_obj2),
+        run_time=1
     )
     
-    self.wait()
+    self.wait(2)
 
+
+    # FadeOut
     self.play(
         FadeOut(text_obj1),
         FadeOut(text_obj2),
@@ -38,30 +43,75 @@ def begining_of_part_two(self):
 
 
 def part_two_main(self):
+    # values & circle
+    a_angle = ValueTracker(4 * PI / 3)
+    b_angle = ValueTracker(5 * PI / 3)
+    c_angle = ValueTracker(5 * PI / 6)
+    d_angle = ValueTracker(PI / 2)
+    e_angle = ValueTracker(PI / 6)
+    
     circle = Circle(radius=2.6, color=BLUE)
+    
+    
+    # Dots
     center = Dot(ORIGIN, color=BLACK)
     
-    a_angle = ValueTracker(4 * PI / 3)
     dot_a = always_redraw(lambda: Dot(circle.point_at_angle(a_angle.get_value()), color=YELLOW))
-    
-    b_angle = ValueTracker(5 * PI / 3)
     dot_b = always_redraw(lambda: Dot(circle.point_at_angle(b_angle.get_value()), color=YELLOW))
-
-
-    c_angle = ValueTracker(5 * PI / 6)
     dot_c = always_redraw(lambda: Dot(circle.point_at_angle(c_angle.get_value()), color=GREEN))
-    
-    d_angle = ValueTracker(PI / 2)
     dot_d = always_redraw(lambda: Dot(circle.point_at_angle(d_angle.get_value()), color=GREEN))
-    
-    e_angle = ValueTracker(PI / 6)
     dot_e = always_redraw(lambda: Dot(circle.point_at_angle(e_angle.get_value()), color=GREEN))
+    
+    
+    # Str dots
+    dot_a_tex = always_redraw(
+        lambda: Tex("A")
+        .next_to(dot_a, DOWN+LEFT, buff=0.2)
+        .set_color(WHITE)
+    )
+    dot_b_tex = always_redraw(
+        lambda: Tex("B")
+        .next_to(dot_b, DOWN+RIGHT, buff=0.2)
+        .set_color(WHITE)
+    )
+    dot_c_tex = always_redraw(
+        lambda: Tex("C")
+        .next_to(dot_c, UP+LEFT, buff=0.2)
+        .set_color(WHITE)
+    )
+    dot_d_tex = always_redraw(
+        lambda: Tex("D")
+        .next_to(dot_d, UP, buff=0.2)
+        .set_color(WHITE)
+    )
+    dot_e_tex = always_redraw(
+        lambda: Tex("E")
+        .next_to(dot_e, UP+RIGHT, buff=0.2)
+        .set_color(WHITE)
+    )
 
 
-    # Градус Дуги
+    # Lines
     line_oa = always_redraw(lambda: Line(ORIGIN, dot_a.get_center()).set_color(BLACK))
     line_ob = always_redraw(lambda: Line(ORIGIN, dot_b.get_center()).set_color(BLACK))
     
+    line_ca = always_redraw(lambda: Line(dot_c.get_center(), dot_a.get_center()))
+    line_cb = always_redraw(lambda: Line(dot_c.get_center(), dot_b.get_center()))
+    
+    line_da = always_redraw(lambda: Line(dot_d.get_center(), dot_a.get_center()))
+    line_db = always_redraw(lambda: Line(dot_d.get_center(), dot_b.get_center()))
+    
+    line_ea = always_redraw(lambda: Line(dot_e.get_center(), dot_a.get_center()))
+    line_eb = always_redraw(lambda: Line(dot_e.get_center(), dot_b.get_center()))
+    
+    
+    # Underlines
+    underline_acb = Underline(acb_val[0], buff=0.1, color=YELLOW)
+    underline_adb = Underline(adb_val[0], buff=0.1, color=YELLOW)
+    underline_aeb = Underline(aeb_val[0], buff=0.1, color=YELLOW)
+    
+    
+    # Center angle & value
     central_angle = always_redraw(
         lambda: Angle(line_oa, line_ob, radius=2.6, color=BLUE, other_angle=False)
     )
@@ -72,24 +122,25 @@ def part_two_main(self):
         .set_color(WHITE)
     )
     
-    # Вписанный угол и его линии
-    line_ca = always_redraw(lambda: Line(dot_c.get_center(), dot_a.get_center()))
-    line_cb = always_redraw(lambda: Line(dot_c.get_center(), dot_b.get_center()))
     
-    line_da = always_redraw(lambda: Line(dot_d.get_center(), dot_a.get_center()))
-    line_db = always_redraw(lambda: Line(dot_d.get_center(), dot_b.get_center()))
+    # Inscribed angle & value
+    def get_angle_val():
+        arc_diff = abs((a_angle.get_value() % (2 * PI)) - (b_angle.get_value() % (2 * PI)))
+        
+        minor_arc = min(arc_diff, 2 * PI - arc_diff)
+        
+        return minor_arc / 2 / DEGREES
     
-    line_ea = always_redraw(lambda: Line(dot_e.get_center(), dot_a.get_center()))
-    line_eb = always_redraw(lambda: Line(dot_e.get_center(), dot_b.get_center()))
     
     acb_angle = always_redraw(
         lambda: Angle(line_ca, line_cb, radius=0.8, color=ORANGE, other_angle=False)
     )
     
     acb_val = always_redraw(
-        lambda: MathTex(rf"{(b_angle.get_value() - a_angle.get_value()) / 2 / DEGREES:.1f}^\circ")
+        lambda: MathTex(rf"{get_angle_val():.1f}^\circ")
         .next_to(acb_angle, DOWN, buff=0.3)
         .set_color(WHITE)
+        .set_stroke(color=BLACK, width=9, background=True)
     )
     
     
@@ -98,9 +149,10 @@ def part_two_main(self):
     )
     
     adb_val = always_redraw(
-        lambda: MathTex(rf"{(b_angle.get_value() - a_angle.get_value()) / 2 / DEGREES:.1f}^\circ")
+        lambda: MathTex(rf"{get_angle_val():.1f}^\circ")
         .next_to(adb_angle, DOWN, buff=0.3)
         .set_color(WHITE)
+        .set_stroke(color=BLACK, width=9, background=True)
     )
     
     
@@ -109,13 +161,14 @@ def part_two_main(self):
     )
     
     aeb_val = always_redraw(
-        lambda: MathTex(rf"{(b_angle.get_value() - a_angle.get_value()) / 2 / DEGREES:.1f}^\circ")
+        lambda: MathTex(rf"{get_angle_val():.1f}^\circ")
         .next_to(aeb_angle, DOWN, buff=0.3)
         .set_color(WHITE)
+        .set_stroke(color=BLACK, width=9, background=True)
     )
 
 
-    # Render the Circle
+    # Render the sketch
     self.add(
         center, 
         line_oa, 
@@ -124,11 +177,17 @@ def part_two_main(self):
     
     self.play(
         Create(circle), 
+        
         Create(dot_a), 
+        FadeIn(dot_a_tex),
         Create(dot_b), 
+        FadeIn(dot_b_tex),
         Create(dot_c),
+        FadeIn(dot_c_tex),
         Create(dot_d),
-        Create(dot_e)
+        FadeIn(dot_d_tex),
+        Create(dot_e),
+        FadeIn(dot_e_tex),
     )
     
     self.play(
@@ -157,17 +216,12 @@ def part_two_main(self):
     self.wait()
 
 
-    # Animate Points
-    underline_acb = Underline(acb_val[0], buff=0.1, color=YELLOW)
-    underline_adb = Underline(adb_val[0], buff=0.1, color=YELLOW)
-    underline_aeb = Underline(aeb_val[0], buff=0.1, color=YELLOW)
-    
+    # Animation
     self.play(
         Create(underline_acb),
         Create(underline_adb),
         Create(underline_aeb)
     )
-    
     
     self.play(
         a_angle.animate.set_value(5 * PI / 4), 
@@ -175,7 +229,8 @@ def part_two_main(self):
         run_time=4, 
         rate_func=smooth
     )
-    self.wait(0.2)
+    
+    self.wait(0.5)
     
     self.play(
         a_angle.animate.set_value(4 * PI / 3), 
@@ -183,16 +238,11 @@ def part_two_main(self):
         run_time=4, 
         rate_func=smooth
     )
-    self.wait(0.2)
-    self.play(
-        Uncreate(underline_acb),
-        Uncreate(underline_adb),
-        Uncreate(underline_aeb)
-    )
     
     self.wait()
     
     
+    # FadeOut
     self.play(
         FadeOut(center), 
         FadeOut(line_oa), 
@@ -204,7 +254,17 @@ def part_two_main(self):
         FadeOut(dot_c),
         FadeOut(dot_d),
         FadeOut(dot_e),
-
+        
+        FadeOut(dot_a_tex),
+        FadeOut(dot_b_tex),
+        FadeOut(dot_c_tex),
+        FadeOut(dot_d_tex),
+        FadeOut(dot_e_tex),
+        
+        FadeOut(underline_acb),
+        FadeOut(underline_adb),
+        FadeOut(underline_aeb),        
+        
         FadeOut(central_angle), 
         FadeOut(central_val),
 
@@ -222,4 +282,5 @@ def part_two_main(self):
         FadeOut(aeb_angle), 
         FadeOut(aeb_val)
     )
-    self.wait(0.3)
+    
+    self.wait()
