@@ -163,9 +163,23 @@ def part_two_main(self):
     
     
     # Underlines
-    underline_acb = Underline(acb_val[0], buff=0.1, color=YELLOW)
-    underline_adb = Underline(adb_val[0], buff=0.1, color=YELLOW)
-    underline_aeb = Underline(aeb_val[0], buff=0.1, color=YELLOW)
+    underline_acb = Underline(
+        acb_val[0], 
+        buff=0.1, 
+        color=YELLOW
+    ).set_stroke(color=BLACK, width=9, background=True)
+    
+    underline_adb = Underline(
+        adb_val[0], 
+        buff=0.1, 
+        color=YELLOW
+    ).set_stroke(color=BLACK, width=9, background=True)
+    
+    underline_aeb = Underline(
+        aeb_val[0], 
+        buff=0.1, 
+        color=YELLOW
+    ).set_stroke(color=BLACK, width=9, background=True)
 
 
     # Render the sketch
