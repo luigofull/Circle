@@ -1,3 +1,3 @@
 ## It's my second animation on Manim
 
-![[image.png]]
+![[images/image.png]]
